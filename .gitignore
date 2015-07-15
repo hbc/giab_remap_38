@@ -1,0 +1,8 @@
+GiaB_*.vcf.gz*
+GiaB_*regions.bed
+inputs/GiaB_*.vcf.gz*
+inputs/GiaB_*regions.bed
+inputs/*.chain
+liftover_grch38
+remap_grch38*
+source_split_grch37
