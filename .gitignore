@@ -3,6 +3,7 @@ GiaB_*regions.bed
 inputs/GiaB_*.vcf.gz*
 inputs/GiaB_*regions.bed
 inputs/*.chain
+crossmap_grch38
 liftover_grch38
 remap_grch38*
 source_split_grch37
