@@ -22,7 +22,7 @@ mkdir -p $cm_dir
 [[ -f $cm_dir/$cm_out_base-orig.bed ]] || CrossMap.py bed $chain $cm_dir/$cm_out_base-input.bed $cm_dir/$cm_out_base-orig.bed
 [[ -f $cm_out_base-regions.bed ]] || cat $cm_dir/$cm_out_base-orig.bed | $python scripts/filter_bed_contigs.py $cm_out_base.vcf.gz | sort -k1,1 -k2,2n | bedtools merge -i - > $cm_out_base-regions.bed
 
-# prepare split VCF and BED inputs
+# ## prepare split VCF and BED inputs
 to_hg19_chroms='sed "s/^\([0-9]\+\)\t/chr\1\t/g" | sed "s/^MT/chrM/g" | sed "s/^X/chrX/g" | sed "s/^Y/chrY/g"'
 split_dir=source_split_grch37
 mkdir -p $split_dir
@@ -49,10 +49,13 @@ split -l 100000 -d inputs/GiaB_${version}_regions.bed $rmr_dir/split_regions
 parallel -k -j 1 -t "[[ -f {}-hg38.bed ]] || perl scripts/remap_api.pl --mode asm-asm --from GCF_000001405.25 --dest GCF_000001405.26 --annotation {}  --annot_out {}-hg38.bed --report_out {}-hg38.37to38rpt.tsv --gbench_out {}-hg38.gbp" ::: $rmr_dir/split_regions??
 
 [[ -f $rmr_outfile ]] || cat $rmr_dir/split_regions*-hg38.bed | grep -v ^track | grep -v ^## | sort -k1,1 -k2,2n | bedtools merge -i - | $python scripts/map_GRCh38_hg38.py inputs/GRCh38_ensembl2UCSC.txt | $python scripts/filter_bed_contigs.py $remap_outfile > $rmr_outfile
+[[ -f $rmr_dir/unmapped.bed ]] || $python scripts/find_nomap_from_remap.py $rmr_dir/unmapped.bed $rmr_dir/*-hg38.37to38rpt.tsv
 
 # # liftover
-# lo_dir=liftover_grch38
-# chain=inputs/hg19ToHg38.over.chain
-# mkdir -p $lo_dir
-# parallel -k -j 1 -t "[[ -f $lo_dir/{/.}.bed ]] || liftOver {} $chain $lo_dir/{/.}.bed $lo_dir/{/.}.unmapped.txt" ::: $split_dir/*.bed
+lo_dir=liftover_grch38
+chain=inputs/hg19ToHg38.over.chain
+lor_outbase=$lo_dir/GiaB_$version-38_liftover
+mkdir -p $lo_dir
+[[ -f $lor_outbase.bed ]] || liftOver $cm_dir/$cm_out_base-input.bed $chain $lor_outbase.bed $lor_outbase.unmapped.txt
+#parallel -k -j 1 -t "[[ -f $lo_dir/{/.}.bed ]] || liftOver {} $chain $lo_dir/{/.}.bed $lo_dir/{/.}.unmapped.txt" ::: $split_dir/*.bed
 # 
