@@ -11,6 +11,23 @@ purposes:
 - [The NCBI remapping service](http://www.ncbi.nlm.nih.gov/genome/tools/remap)
 - [CrossMap](https://crossmap.sourceforge.net) with [UCSC chain files](http://genome.ucsc.edu/cgi-bin/hgLiftOver)
 
+## Results
+
+- [Validation results](http://imgur.com/a/2Ezonk)
+
+- [Remapped truth sets and other files](http://biodata.s3-website-us-east-1.amazonaws.com/giab_hg38_remap/)
+  - Genome in a Bottle regions for GRCh37 that map to build 38:
+    GiaB_v2_19-37_prep_regions.bed
+
+  - Crossmap hg38 liftover with UCSC chain files, regions and VCF file:
+    GiaB_v2_19-38_crossmap-regions.bed,  GiaB_v2_19-38_crossmap.vcf.gz
+
+  - NCBI remap hg38 regions and VCF file:
+    GiaB_v2_19-38_remap-regions.bed, GiaB_v2_19-38_remap.vcf.gz
+
+  - Validation results for 37 and two 38 methods using [rtg vcfeval](https://github.com/RealTimeGenomics/rtg-tools):
+    giab-hg38-validation-results.tar.gz
+
 ### Usage
 
 Download the inputs with:
