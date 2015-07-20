@@ -58,4 +58,7 @@ lor_outbase=$lo_dir/GiaB_$version-38_liftover
 mkdir -p $lo_dir
 [[ -f $lor_outbase.bed ]] || liftOver $cm_dir/$cm_out_base-input.bed $chain $lor_outbase.bed $lor_outbase.unmapped.txt
 #parallel -k -j 1 -t "[[ -f $lo_dir/{/.}.bed ]] || liftOver {} $chain $lo_dir/{/.}.bed $lo_dir/{/.}.unmapped.txt" ::: $split_dir/*.bed
-# 
+
+# ## Calculate non
+$python scripts/create_nomap_37regions.py inputs/GiaB_${version}_regions.bed GiaB_${version}-37_prep_regions.bed $rmr_dir/unmapped.bed $lor_outbase.unmapped.txt
+
