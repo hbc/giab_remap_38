@@ -15,6 +15,6 @@ for line in sys.stdin:
         chrom, start, rid, refa = line.split("\t")[:4]
         start = int(start) - 1
         refbase = str(refdict[chrom][start:start + len(refa)])
-        matches = refbase == refa
+        matches = (refbase == refa) and all(b.upper() in ["G", "A", "T", "C", "N"] for b in refbase)
     if matches:
         sys.stdout.write(line)
