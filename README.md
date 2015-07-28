@@ -13,7 +13,7 @@ purposes:
 
 ## Results
 
-- [Validation results](http://imgur.com/a/2Ezonk)
+- [Validation results](http://imgur.com/a/2Ezon)
 
 - [Remapped truth sets and other files](http://biodata.s3-website-us-east-1.amazonaws.com/giab_hg38_remap/)
   - Genome in a Bottle regions for GRCh37 that map to build 38:

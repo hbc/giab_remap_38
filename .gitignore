@@ -7,3 +7,6 @@ crossmap_grch38
 liftover_grch38
 remap_grch38*
 source_split_grch37
+bcbio_calls
+debug_fps
+giab-hg38-validation-results
