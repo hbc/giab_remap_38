@@ -37,7 +37,7 @@ mkdir -p $rm_dir
 remap_outfile=GiaB_$version-38_remap.vcf.gz
 parallel -k -j 1 -t "$python scripts/remap_remove_truncated.py {}  $rm_dir/{/.}.vcf" ::: $split_dir/*.vcf
 
-parallel -k -j 5 -t "[[ -f $rm_dir/{/.}.vcf ]] || perl scripts/remap_api.pl --mode asm-asm --from GCF_000001405.25 --dest GCF_000001405.26 --annotation {}  --annot_out $rm_dir/{/.}.vcf --report_out $rm_dir/{/.}.37to38rpt.tsv" ::: $split_dir/*.vcf
+parallel -k -j 5 -t "[[ -f $rm_dir/{/.}.vcf ]] || perl scripts/remap_api.pl --mode asm-asm --from GCF_000001405.13 --dest GCF_000001405.26 --annotation {}  --annot_out $rm_dir/{/.}.vcf --report_out $rm_dir/{/.}.37to38rpt.tsv" ::: $split_dir/*.vcf
 parallel -k -j 1 --halt 2 -t "[[ -f {}.gz ]] || $python scripts/orig_w_remap_coords.py $split_dir/{/.}.vcf {} | $python scripts/map_GRCh38_hg38.py inputs/GRCh38_ensembl2UCSC.txt | $python scripts/fix_giab_headers.py | $python scripts/fix_nomatching_ref.py $ref38 | bcftools annotate -h inputs/GRCh38-contig-header.txt - | vt sort -w 10000000 -m full - | bgzip -c > {}.gz" ::: $rm_dir/*.vcf
 parallel -k --halt 2 -t "[[ -f {}.tbi ]] || tabix -f -p vcf {}" ::: $rm_dir/*.vcf.gz
 RM_INPUTS=`parallel -k 'echo "--variant {}"' ::: remap_grch38/GIAB_*.vcf.gz`
@@ -48,7 +48,7 @@ rmr_dir=remap_grch38_regions
 rmr_outfile=GiaB_$version-38_remap-regions.bed
 mkdir -p $rmr_dir
 split -l 100000 -d inputs/GiaB_${version}_regions.bed $rmr_dir/split_regions
-parallel -k -j 1 -t "[[ -f {}-hg38.bed ]] || perl scripts/remap_api.pl --mode asm-asm --from GCF_000001405.25 --dest GCF_000001405.26 --annotation {}  --annot_out {}-hg38.bed --report_out {}-hg38.37to38rpt.tsv" ::: $rmr_dir/split_regions??
+parallel -k -j 7 -t "[[ -f {}-hg38.bed ]] || perl scripts/remap_api.pl --mode asm-asm --from GCF_000001405.13 --dest GCF_000001405.26 --annotation {}  --annot_out {}-hg38.bed --report_out {}-hg38.37to38rpt.tsv" ::: $rmr_dir/split_regions??
 
 [[ -f $rmr_outfile ]] || cat $rmr_dir/split_regions*-hg38.bed | grep -v ^track | grep -v ^## | sort -k1,1 -k2,2n | bedtools merge -i - | $python scripts/map_GRCh38_hg38.py inputs/GRCh38_ensembl2UCSC.txt | $python scripts/filter_bed_contigs.py $remap_outfile > $rmr_outfile
 [[ -f $rmr_dir/unmapped.bed ]] || $python scripts/find_nomap_from_remap.py $rmr_dir/unmapped.bed $rmr_dir/*-hg38.37to38rpt.tsv
