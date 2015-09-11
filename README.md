@@ -15,7 +15,7 @@ purposes:
 
 - [Validation results](http://imgur.com/a/2Ezon)
 
-- [Remapped truth sets and other files](http://biodata.s3-website-us-east-1.amazonaws.com/giab_hg38_remap/)
+- [Remapped truth sets and validation files](http://biodata.s3-website-us-east-1.amazonaws.com/giab_hg38_remap/)
   - Genome in a Bottle regions for GRCh37 that map to build 38:
     GiaB_v2_19-37_prep_regions.bed
 
@@ -25,8 +25,11 @@ purposes:
   - NCBI remap hg38 regions and VCF file:
     GiaB_v2_19-38_remap-regions.bed, GiaB_v2_19-38_remap.vcf.gz
 
-  - Validation results for 37 and two 38 methods using [rtg vcfeval](https://github.com/RealTimeGenomics/rtg-tools):
+  - Validation VCFs and statistics using [rtg vcfeval](https://github.com/RealTimeGenomics/rtg-tools):
     giab-hg38-validation-results.tar.gz
+
+  - Indels that are different but overlapping between Platinum Genomes and Genome in a Bottle:
+    giab-platinum-indel-diffs.tar.gz 
 
 ### Usage
 
@@ -59,5 +62,5 @@ The easiest way to install the Python dependencies is with
 
 ### Contributors
 
-[Deanna Church](https://github.com/deannachurch)
-[Brad Chapman](https://github.com/chapmanb/)
+- [Deanna Church](https://github.com/deannachurch)
+- [Brad Chapman](https://github.com/chapmanb/)
